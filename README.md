@@ -1,115 +1,77 @@
 🍽️ Projeto Cardápio Digital (Spring Boot + React)
-Este projeto demonstra a construção de um Cardápio Digital utilizando Spring Boot para o Backend RESTful e React para o Frontend. O objetivo é fornecer um ambiente de estudo completo sobre a comunicação entre aplicações full-stack.
+O Cardápio Digital é um projeto desenvolvido para demonstrar a criação de uma aplicação full-stack completa, integrando um Backend RESTful robusto em Spring Boot com um Frontend dinâmico em React.
 
-🚀 Tecnologias Utilizadas
-Backend (Spring Boot)
-Java 17+
+O foco principal é o estudo da comunicação CORS e o uso do padrão DTO (Data Transfer Object) na criação e listagem de recursos.
 
-Spring Boot 3+
+📚 Funcionalidades Implementadas
+O sistema permite a gestão básica dos itens de um cardápio:
 
-Spring Web MVC (Para a criação de APIs REST)
+Listagem de Itens: Recuperação e exibição de todos os pratos cadastrados via API.
 
-Spring Data JPA (Para persistência de dados)
+Cadastro de Novos Itens: Criação de novos pratos através de um endpoint POST.
 
-Banco de Dados H2 (Em memória, ideal para desenvolvimento)
+API REST Completa: Estrutura de endpoints utilizando o padrão RESTful.
 
-Lombok (Para simplificar a escrita de classes Java)
+Comunicação Cross-Origin: Configuração explícita de CORS para permitir a comunicação segura entre o servidor Spring (porta 8080) e o cliente React (porta típica 3000 ou 5173).
 
-Frontend (React)
-React (com Vite/CRA)
+---
 
-TypeScript/JavaScript
+## 🛠 Tecnologias utilizadas
 
-Axios ou Fetch API (Para requisições HTTP)
+<div align="center">
+  <img src="https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Spring_Boot-6DB33F?style=for-the-badge&logo=spring-boot&logoColor=white"/>
+ <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB"/>
+  <img src="https://img.shields.io/badge/Bootstrap-7952B3?style=for-the-badge&logo=bootstrap&logoColor=white"/>
+  <img src="https://img.shields.io/badge/H2-Database-0F3D91?style=for-the-badge&logo=h2&logoColor=white"/>
 
-Vite (Geralmente mais rápido que o CRA para desenvolvimento)
+</div>
 
-🛠️ Configuração e Execução
+---
+Exportar para as Planilhas
+🚀 Configuração e Execução
 1. Backend (Spring Boot)
-O backend é responsável por gerenciar os dados do cardápio e expor a API.
+Configuração
+O banco de dados H2 está configurado para rodar em memória. Isso significa que a cada reinício da aplicação, os dados são perdidos, garantindo um ambiente de desenvolvimento limpo.
 
-Configuração de Banco de Dados
-Conforme configurado em application.properties, o projeto utiliza o H2 Database em memória.
-
-URL: jdbc:h2:mem:cardapio-db
-
-Console Web: O console do H2 está acessível em http://localhost:8080/h2-console (use as credenciais configuradas para acessar).
+Console do H2: Para visualização dos dados e tabelas, acesse: http://localhost:8080/h2-console
 
 Como Executar
-Certifique-se de ter o Java Development Kit (JDK) 17 ou superior instalado.
-
 Navegue até o diretório raiz do projeto backend (/cardapio).
 
-Execute a aplicação Spring Boot via Maven ou IDE:
+Inicie a aplicação utilizando o Maven:
 
 Bash
 
-# Execução via Maven Wrapper
 ./mvnw spring-boot:run
 O servidor estará rodando em: http://localhost:8080
 
 Endpoint	Método	Descrição
-/food	GET	Lista todos os itens do cardápio.
-/food	POST	Cadastra um novo item no cardápio.
+/food	GET	Retorna a lista de itens do cardápio.
+/food	POST	Recebe dados e cadastra um novo item de comida.
 
 Exportar para as Planilhas
 2. Frontend (React)
-O frontend é um projeto React que consome a API do Spring Boot.
+O projeto React deve ser configurado para consumir a API exposta em http://localhost:8080/food.
 
-Estrutura da Requisição
-Os componentes React farão requisições para o backend, por exemplo, para listar os itens:
+Navegue até o diretório do seu projeto React.
 
-JavaScript
+Instale as dependências: npm install (ou yarn install).
 
-// Exemplo de requisição no React
-import axios from 'axios';
+Inicie o servidor de desenvolvimento: npm run dev (ou yarn dev).
 
-async function fetchFood() {
-  const response = await axios.get('http://localhost:8080/food');
-  return response.data;
-}
-Como Executar
-Certifique-se de ter o Node.js e o npm ou yarn instalados.
+💡 Pontos de Estudo e Discussão
+Este projeto é uma excelente ferramenta para aprofundar os seguintes conceitos:
 
-Navegue até o diretório do seu projeto frontend (ex: /cardapio-frontend).
+Mapeamento DTO: O FoodController utiliza FoodRequestDTO para receber dados e FoodResponseDTO para retornar dados, garantindo que o cliente só veja as informações necessárias.
 
-Instale as dependências:
+Regras de Negócio no Controller: O uso de Food foodData = new Food(data); no POST demonstra a conversão do DTO de entrada para a entidade de persistência.
 
-Bash
+CORS Aberto: O uso de @CrossOrigin(origins = "*") no controller é intencional para fins de estudo, permitindo que o React em qualquer porta se comunique. Em produção, este valor deve ser restrito ao domínio do cliente.
 
-npm install
-# ou
-yarn install
-Inicie o servidor de desenvolvimento do React:
+👨‍💻 Autor
+Diego Leite
 
-Bash
+Contato: dev.diegocba@gmail.com
 
-npm run dev
-# ou
-yarn dev
-O frontend geralmente rodará em http://localhost:5173 ou http://localhost:3000.
-
-🔒 Estudo de Caso: CORS
-O seu FoodController possui a anotação @CrossOrigin(origins = "*", allowedHeaders = "*"), que é fundamental para a comunicação entre o frontend React (rodando em uma porta, ex: 3000) e o backend Spring Boot (rodando em outra porta, ex: 8080).
-
-O que é CORS?
-CORS (Cross-Origin Resource Sharing) é um mecanismo que permite que recursos restritos em uma página da web sejam solicitados a partir de outro domínio fora do domínio que serviu o primeiro recurso.
-
-@CrossOrigin(origins = "*"): Permite requisições de qualquer origem (domínio/porta).
-
-allowedHeaders = "*": Permite todos os cabeçalhos HTTP nas requisições.
-
-⚠️ Observação de Estudo: Em ambientes de produção, é altamente recomendável substituir "*" pelo domínio específico do seu frontend (ex: http://seu-dominio-frontend.com).
-
-📚 Tópicos Chave para Estudo
-Este projeto é uma ótima base para estudar:
-
-DTO Pattern (Data Transfer Object): Implementado no seu código (FoodRequestDTO e FoodResponseDTO), garante a separação entre a camada de persistência (Food) e a camada de API.
-
-Requisições Assíncronas: Como o React lida com GET (listagem) e POST (cadastro) usando useEffect e State Management.
-
-Mapeamento de Entidades: Como o Spring Data JPA mapeia classes Java para tabelas no banco de dados.
-
-Injeção de Dependência: O uso de @Autowired para gerenciar as instâncias do FoodRepository.
-
-Ciclo de Vida do H2: Como os dados são criados e destruídos a cada reinício da aplicação em um banco de dados em memória.
+Licença: Este projeto é destinado a fins de estudo e aprendizado. Sinta-se à vontade para explorar e modificar.
